@@ -1,24 +1,393 @@
 <% layout("../layouts/boilerplate") %>
 
-<h3>Create a New Listing</h3>
-<form action="/listings" method="POST">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required><br>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <!-- Header Section -->
+      <div class="text-center mb-4">
+        <h2 class="text-primary fw-bold mb-2">Create a New Listing</h2>
+        <p class="text-muted">Share your amazing property with travelers worldwide</p>
+      </div>
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" required></textarea><br>
+      <!-- Form Section -->
+      <form action="/listings" method="POST" class="row g-3 needs-validation shadow-lg p-4 rounded-4 bg-white" novalidate>
+        
+        <!-- Title Field -->
+        <div class="col-12">
+          <label for="title" class="form-label fw-semibold">
+            <i class="fas fa-home text-primary me-2"></i>Property Title
+          </label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            class="form-control form-control-lg" 
+            placeholder="e.g., Cozy Beachfront Villa in Goa" 
+            minlength="5"
+            maxlength="100"
+            required
+          >
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Perfect title!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please provide a title (5-100 characters).
+          </div>
+        </div>
 
-    <label for="image">Image URL:</label>
-    <input type="url" id="image" name="image"><br>
+        <!-- Description Field -->
+        <div class="col-12">
+          <label for="description" class="form-label fw-semibold">
+            <i class="fas fa-align-left text-primary me-2"></i>Description
+          </label>
+          <textarea 
+            id="description" 
+            name="description" 
+            class="form-control" 
+            rows="4" 
+            placeholder="Describe your property, amenities, and what makes it special..."
+            minlength="20"
+            maxlength="1000"
+            required
+          ></textarea>
+          <div class="form-text">
+            <small class="text-muted">
+              <span id="charCount">0</span>/1000 characters
+            </small>
+          </div>
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Great description!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please provide a description (20-1000 characters).
+          </div>
+        </div>
 
-    <label for="price">Price:</label>
-    <input type="number" id="price" name="price" min="0" required><br>
+        <!-- Image URL Field -->
+        <div class="col-12">
+          <label for="image" class="form-label fw-semibold">
+            <i class="fas fa-camera text-primary me-2"></i>Image URL
+            <span class="text-muted">(Optional)</span>
+          </label>
+          <input 
+            type="url" 
+            id="image" 
+            name="image" 
+            class="form-control" 
+            placeholder="https://example.com/your-image.jpg"
+          >
+          <div class="form-text">
+            <small class="text-muted">Leave empty to use default image</small>
+          </div>
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Valid image URL!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please provide a valid image URL.
+          </div>
+        </div>
 
-    <label for="location">Location:</label>
-    <input type="text" id="location" name="location" required><br>
+        <!-- Price Field -->
+        <div class="col-md-6">
+          <label for="price" class="form-label fw-semibold">
+            <i class="fas fa-rupee-sign text-primary me-2"></i>Price per Night
+          </label>
+          <div class="input-group has-validation">
+            <span class="input-group-text bg-primary text-white">
+              <i class="fas fa-rupee-sign"></i>
+            </span>
+            <input 
+              type="number" 
+              id="price" 
+              name="price" 
+              class="form-control form-control-lg" 
+              min="100" 
+              max="100000"
+              placeholder="2500" 
+              required
+            >
+            <div class="valid-feedback">
+              <i class="fas fa-check-circle me-1"></i>Good price!
+            </div>
+            <div class="invalid-feedback">
+              <i class="fas fa-exclamation-circle me-1"></i>Please enter a valid price (₹100 - ₹1,00,000).
+            </div>
+          </div>
+        </div>
 
-    <label for="country">Country:</label>
-    <input type="text" id="country" name="country" required><br>
+        <!-- Property Type -->
+        <div class="col-md-6">
+          <label for="propertyType" class="form-label fw-semibold">
+            <i class="fas fa-building text-primary me-2"></i>Property Type
+          </label>
+          <select class="form-select form-select-lg" id="propertyType" name="propertyType" required>
+            <option selected disabled value="">Choose type...</option>
+            <option value="Villa">Villa</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Resort">Resort</option>
+            <option value="Cottage">Cottage</option>
+            <option value="Homestay">Homestay</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Perfect choice!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please select a property type.
+          </div>
+        </div>
 
-    <button type="submit">Create Listing</button>
-</form>
+        <!-- Location Field -->
+        <div class="col-md-8">
+          <label for="location" class="form-label fw-semibold">
+            <i class="fas fa-map-marker-alt text-primary me-2"></i>Location/City
+          </label>
+          <input 
+            type="text" 
+            id="location" 
+            name="location" 
+            class="form-control form-control-lg" 
+            placeholder="e.g., Mumbai, Goa, Jaipur" 
+            minlength="2"
+            maxlength="50"
+            required
+          >
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Great location!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please provide a valid location.
+          </div>
+        </div>
+
+        <!-- Country Field -->
+        <div class="col-md-4">
+          <label for="country" class="form-label fw-semibold">
+            <i class="fas fa-globe text-primary me-2"></i>Country
+          </label>
+          <select class="form-select form-select-lg" id="country" name="country" required>
+            <option selected disabled value="">Choose...</option>
+            <option value="India">India</option>
+            <option value="United States">United States</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Canada">Canada</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Japan">Japan</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="valid-feedback">
+            <i class="fas fa-check-circle me-1"></i>Perfect!
+          </div>
+          <div class="invalid-feedback">
+            <i class="fas fa-exclamation-circle me-1"></i>Please select a country.
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="col-12">
+          <div class="form-check form-check-lg">
+            <input class="form-check-input" type="checkbox" value="" id="agreeTerms" required>
+            <label class="form-check-label fw-semibold" for="agreeTerms">
+              I agree to the <a href="#" class="text-primary text-decoration-none">Terms of Service</a> 
+              and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>
+            </label>
+            <div class="invalid-feedback">
+              <i class="fas fa-exclamation-circle me-1"></i>You must agree to the terms and conditions.
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="col-12 text-center mt-4">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <a href="/listings" class="btn btn-outline-secondary btn-lg px-4">
+              <i class="fas fa-arrow-left me-2"></i>Cancel
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg px-5">
+              <i class="fas fa-plus-circle me-2"></i>Create Listing
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Custom JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for description
+    const description = document.getElementById('description');
+    const charCount = document.getElementById('charCount');
+    
+    description.addEventListener('input', function() {
+      charCount.textContent = this.value.length;
+      
+      if (this.value.length > 1000) {
+        charCount.classList.add('text-danger');
+      } else if (this.value.length > 800) {
+        charCount.classList.add('text-warning');
+        charCount.classList.remove('text-danger');
+      } else {
+        charCount.classList.remove('text-danger', 'text-warning');
+      }
+    });
+
+    // Form validation
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    });
+
+    // Price formatting
+    const priceInput = document.getElementById('price');
+    priceInput.addEventListener('input', function() {
+      // Remove non-numeric characters except decimal point
+      this.value = this.value.replace(/[^0-9.]/g, '');
+    });
+  });
+</script>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+  }
+
+  .form-control, .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #1e90ff;
+    box-shadow: 0 0 0 0.2rem rgba(30, 144, 255, 0.15);
+    transform: translateY(-1px);
+  }
+
+  .form-control.is-valid, .form-select.is-valid {
+    border-color: #28a745;
+    background-image: none;
+  }
+
+  .form-control.is-invalid, .form-select.is-invalid {
+    border-color: #dc3545;
+    background-image: none;
+  }
+
+  .form-control-lg, .form-select-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #1e90ff 0%, #0066cc 100%);
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #0066cc 0%, #1e90ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.3);
+  }
+
+  .btn-outline-secondary {
+    border: 2px solid #6c757d;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-secondary:hover {
+    transform: translateY(-1px);
+  }
+
+  .shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .rounded-4 {
+    border-radius: 1.5rem !important;
+  }
+
+  .form-label {
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  .valid-feedback, .invalid-feedback {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .form-check-input:checked {
+    background-color: #1e90ff;
+    border-color: #1e90ff;
+  }
+
+  .input-group-text {
+    border: 2px solid #e9ecef;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+  }
+
+  .input-group .form-control {
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .input-group:focus-within .input-group-text {
+    border-color: #1e90ff;
+  }
+
+  h2 {
+    color: #2c3e50;
+  }
+
+  /* Animation for form appearance */
+  .needs-validation {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem !important;
+    }
+    
+    .form-control-lg, .form-select-lg {
+      font-size: 1rem;
+    }
+    
+    .btn-lg {
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+</style>
