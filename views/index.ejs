@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoardOn-AllListings</title>
-    <link rel="stylesheet" href="../public/styles.css">
-</head>
-<body>
-    <h3>All Listings</h3>
-    <form method="GET" action="/listings/new">
-        <button>New Listing</button>
-    </form>
-    <ul>
-        <% for(let list of Listings) {%>
-            <li><a href="/listings/<%= list._id %>"><%= list.title %></a></li>
-        <% } %>
-    </ul>
-</body>
-</html>
+<% layout("../layouts/boilerplate") %>
+
+<h3>All Listings</h3>
+<form method="GET" action="/listings/new">
+    <button>New Listing</button>
+</form>
+<ul>
+    <% for(let list of Listings) {%>
+        <li><a href="/listings/<%= list._id %>"><%= list.title %></a></li>
+    <% } %>
+</ul>

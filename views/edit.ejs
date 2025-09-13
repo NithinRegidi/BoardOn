@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoardOn - Edit Listing</title>
-</head>
-<body>
-    <h3>Edit this Listing</h3>
-    <form method="POST" action="/listings/<%= listings._id %>?_method=PUT">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="<%= listings.title %>" required><br><br>
+<% layout("../layouts/boilerplate") %>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required><%= listings.description %></textarea><br><br>
+<h3>Edit this Listing</h3>
+<form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="<%= listing.title %>" required><br><br>
 
-        <label for="image">Image URL:</label>
-        <input type="url" id="image" name="image" value="<%= listings.image %>"><br><br>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required><%= listing.description %></textarea><br><br>
 
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" value="<%= listings.price %>" min="0" required><br><br>
+    <label for="image">Image URL:</label>
+    <input type="url" id="image" name="image" value="<%= listing.image %>"><br><br>
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" value="<%= listings.location %>" required><br><br>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" value="<%= listing.price %>" min="0" required><br><br>
 
-        <label for="country">Country:</label>
-        <input type="text" id="country" name="country" value="<%= listings.country %>" required><br><br>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" value="<%= listing.location %>" required><br><br>
 
-        <button type="submit">Update Listing</button>
-    </form>
-</body>
-</html>
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" value="<%= listing.country %>" required><br><br>
+
+    <button type="submit">Update Listing</button>
+</form>

@@ -7,11 +7,14 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/BoardOn";
 const Listing = require("./models/listing");
 const path = require("path");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended : true }));
 app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, "public")));
+app.engine("ejs", ejsMate);
 
 // MongoDB Database Connected
 main()
@@ -28,7 +31,7 @@ async function main() {
 }
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("BoardOn Project");
 })
 
 // Index Route
@@ -65,7 +68,7 @@ app.get("/listings/:id/edit", async (req, res) => {
     let {id} = req.params;
     const listingById = await Listing.findById(id);
     console.log("Updated Listing ID: ", listingById)
-    res.render("edit.ejs", {listings : listingById});
+    res.render("edit.ejs", {listing : listingById});
 })
 
 app.put("/listings/:id", async (req, res) => {
