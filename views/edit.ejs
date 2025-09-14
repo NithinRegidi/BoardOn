@@ -1,85 +1,214 @@
 <% layout("../layouts/boilerplate") %>
 
 <div class="container py-5">
-  <h3 class="text-center text-primary mb-4">Edit This Listing</h3>
-  <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="shadow p-4 rounded bg-light">
-    <!-- Title -->
-    <div class="mb-3">
-      <label for="title" class="form-label">Title:</label>
-      <input type="text" id="title" name="title" class="form-control" value="<%= listing.title %>" required>
-    </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <!-- Header Section -->
+      <div class="text-center mb-4">
+        <h2 class="text-primary fw-bold mb-2">Edit Listing</h2>
+        <p class="text-muted">Update the details of your property</p>
+      </div>
 
-    <!-- Description -->
-    <div class="mb-3">
-      <label for="description" class="form-label">Description:</label>
-      <textarea id="description" name="description" class="form-control" rows="4" required><%= listing.description %></textarea>
-    </div>
+      <!-- Form Section -->
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="row g-3 shadow-lg p-4 rounded-4 bg-white">
+        
+        <!-- Title Field -->
+        <div class="col-12">
+          <label for="title" class="form-label fw-semibold">
+            <i class="fas fa-home text-primary me-2"></i>Property Title
+          </label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            class="form-control form-control-lg" 
+            value="<%= listing.title %>" 
+            placeholder="e.g., Cozy Beachfront Villa in Goa" 
+            required
+          >
+        </div>
 
-    <!-- Image URL -->
-    <div class="mb-3">
-      <label for="image" class="form-label">Image URL:</label>
-      <input type="url" id="image" name="image" class="form-control" value="<%= listing.image %>">
-    </div>
+        <!-- Description Field -->
+        <div class="col-12">
+          <label for="description" class="form-label fw-semibold">
+            <i class="fas fa-align-left text-primary me-2"></i>Description
+          </label>
+          <textarea 
+            id="description" 
+            name="description" 
+            class="form-control" 
+            rows="4" 
+            placeholder="Describe your property, amenities, and what makes it special..."
+            required
+          ><%= listing.description %></textarea>
+        </div>
 
-    <!-- Price -->
-    <div class="mb-3">
-      <label for="price" class="form-label">Price:</label>
-      <input type="number" id="price" name="price" class="form-control" value="<%= listing.price %>" min="0" required>
-    </div>
+        <!-- Image URL Field -->
+        <div class="col-12">
+          <label for="image" class="form-label fw-semibold">
+            <i class="fas fa-camera text-primary me-2"></i>Image URL
+          </label>
+          <input 
+            type="url" 
+            id="image" 
+            name="image" 
+            class="form-control" 
+            value="<%= listing.image %>" 
+            placeholder="https://example.com/your-image.jpg"
+          >
+        </div>
 
-    <!-- Location -->
-    <div class="mb-3">
-      <label for="location" class="form-label">Location:</label>
-      <input type="text" id="location" name="location" class="form-control" value="<%= listing.location %>" required>
-    </div>
+        <!-- Price Field -->
+        <div class="col-md-6">
+          <label for="price" class="form-label fw-semibold">
+            <i class="fas fa-rupee-sign text-primary me-2"></i>Price per Night
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-primary text-white">
+              <i class="fas fa-rupee-sign"></i>
+            </span>
+            <input 
+              type="number" 
+              id="price" 
+              name="price" 
+              class="form-control form-control-lg" 
+              value="<%= listing.price %>" 
+              min="0" 
+              placeholder="2500" 
+              required
+            >
+          </div>
+        </div>
 
-    <!-- Country -->
-    <div class="mb-3">
-      <label for="country" class="form-label">Country:</label>
-      <input type="text" id="country" name="country" class="form-control" value="<%= listing.country %>" required>
-    </div>
+        <!-- Location Field -->
+        <div class="col-md-6">
+          <label for="location" class="form-label fw-semibold">
+            <i class="fas fa-map-marker-alt text-primary me-2"></i>Location/City
+          </label>
+          <input 
+            type="text" 
+            id="location" 
+            name="location" 
+            class="form-control form-control-lg" 
+            value="<%= listing.location %>" 
+            placeholder="e.g., Mumbai, Goa, Jaipur" 
+            required
+          >
+        </div>
 
-    <!-- Submit Button -->
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary btn-lg">
-        <i class="fas fa-save me-2"></i>Update Listing
-      </button>
+        <!-- Country Field -->
+        <div class="col-md-6">
+          <label for="country" class="form-label fw-semibold">
+            <i class="fas fa-globe text-primary me-2"></i>Country
+          </label>
+          <input 
+            type="text" 
+            id="country" 
+            name="country" 
+            class="form-control form-control-lg" 
+            value="<%= listing.country %>" 
+            placeholder="e.g., India, United States" 
+            required
+          >
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="col-12 text-center mt-4">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <a href="/listings" class="btn btn-outline-secondary btn-lg px-4">
+              <i class="fas fa-arrow-left me-2"></i>Cancel
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg px-5">
+              <i class="fas fa-save me-2"></i>Update Listing
+            </button>
+          </div>
+        </div>
+
+      </form>
     </div>
-  </form>
+  </div>
 </div>
 
 <style>
   body {
-    background-color: #f8f9fa; /* Light gray background */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
   }
 
-  .form-control {
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  .form-control, .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
   }
 
-  .form-control:focus {
+  .form-control:focus, .form-select:focus {
     border-color: #1e90ff;
-    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(30, 144, 255, 0.15);
+    transform: translateY(-1px);
+  }
+
+  .form-control-lg, .form-select-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #1e90ff, #0066cc);
+    background: linear-gradient(135deg, #1e90ff 0%, #0066cc 100%);
     border: none;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   .btn-primary:hover {
-    background: linear-gradient(135deg, #0066cc, #1e90ff);
+    background: linear-gradient(135deg, #0066cc 0%, #1e90ff 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.3);
   }
 
-  .shadow {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  .btn-outline-secondary {
+    border: 2px solid #6c757d;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
   }
 
-  h3 {
-    font-weight: bold;
+  .btn-outline-secondary:hover {
+    transform: translateY(-1px);
+  }
+
+  .shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .rounded-4 {
+    border-radius: 1.5rem !important;
+  }
+
+  .form-label {
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    color: #2c3e50;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem !important;
+    }
+    
+    .form-control-lg, .form-select-lg {
+      font-size: 1rem;
+    }
+    
+    .btn-lg {
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+    }
   }
 </style>
