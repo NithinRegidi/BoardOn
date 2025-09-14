@@ -9,6 +9,10 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
+const wrapAsync = require("./utils/wrapAsync");
+const ExpressError = require("./utils/ExpressError");
+
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended : true }));
@@ -24,21 +28,23 @@ main()
 .catch((err) => {
     console.log("Error in Connecting to Database");
     console.log(err);
-})
+    process.exit(1); // Exit if database connection fails
+});
 
 async function main() {
-    mongoose.connect(MONGO_URL);
+    await mongoose.connect(MONGO_URL);
 }
+ 
 
 app.get("/", (req, res) => {
     res.send("BoardOn Project");
 })
 
 // Index Route
-app.get("/listings", async (req, res) => {
+app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find();
     res.render("index.ejs", { Listings : allListings });
-})
+}));
 
 
 // New Listing Route
@@ -47,44 +53,75 @@ app.get("/listings/new", (req, res) =>{
 })
 
 // Show Route 
-app.get("/listings/:id", async (req, res) => {
+app.get("/listings/:id", wrapAsync(async (req, res, next) => {
     let {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ExpressError("Invalid Listing ID", 400);
+    }
     const listingById = await Listing.findById(id);
+    if (!listingById) {
+        throw new ExpressError("Listing not found", 404);
+    }
     res.render("show.ejs", {listings : listingById});
-})
+}));
 
 
 // create route
-app.post("/listings", async (req, res) => {
+app.post("/listings", wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body);
     await newListing.save();
     res.redirect("/listings");
     console.log("New listing added");
-});
+}));
 
 
 //edit listing
-app.get("/listings/:id/edit", async (req, res) => {
+app.get("/listings/:id/edit", wrapAsync(async (req, res, next) => {
     let {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ExpressError("Invalid Listing ID", 400);
+    }
     const listingById = await Listing.findById(id);
-    console.log("Updated Listing ID: ", listingById)
+    if (!listingById) {
+        throw new ExpressError("Listing not found", 404);
+    }
     res.render("edit.ejs", {listing : listingById});
-})
+}));
 
-app.put("/listings/:id", async (req, res) => {
+app.put("/listings/:id", wrapAsync(async (req, res, next) => {
     let {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ExpressError("Invalid Listing ID", 400);
+    }
     await Listing.findByIdAndUpdate(id, {...req.body});
     res.redirect(`/listings/${id}`);
-})
+}));
 
 
 // Delete Listing
-app.delete("/listings/:id", async (req, res) => {
+app.delete("/listings/:id", wrapAsync(async (req, res, next) => {
     let {id} = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ExpressError("Invalid Listing ID", 400);
+    }
     const deletedListing = await Listing.findByIdAndDelete(id);
-    console.log("Deleted Listing: ", deletedListing);
+    if (!deletedListing) {
+        throw new ExpressError("Listing not found", 404);
+    }
     res.redirect("/listings");
-})
+}));
+
+
+// 404 Handler - For non-existent routes
+app.use((req, res, next) => {
+    next(new ExpressError("Page Not Found", 404));
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong" } = err;
+    res.status(statusCode).render("error", { statusCode, message });
+});
 
 
 

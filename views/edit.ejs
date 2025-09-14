@@ -10,7 +10,7 @@
       </div>
 
       <!-- Form Section -->
-      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="row g-3 shadow-lg p-4 rounded-4 bg-white">
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="row g-3 needs-validation shadow-lg p-4 rounded-4 bg-white" novalidate>
         
         <!-- Title Field -->
         <div class="col-12">
@@ -24,8 +24,16 @@
             class="form-control form-control-lg" 
             value="<%= listing.title %>" 
             placeholder="e.g., Cozy Beachfront Villa in Goa" 
+            minlength="5"
+            maxlength="100"
             required
           >
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please provide a title (5-100 characters).
+          </div>
         </div>
 
         <!-- Description Field -->
@@ -39,8 +47,16 @@
             class="form-control" 
             rows="4" 
             placeholder="Describe your property, amenities, and what makes it special..."
+            minlength="20"
+            maxlength="1000"
             required
           ><%= listing.description %></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please provide a description (20-1000 characters).
+          </div>
         </div>
 
         <!-- Image URL Field -->
@@ -56,6 +72,12 @@
             value="<%= listing.image %>" 
             placeholder="https://example.com/your-image.jpg"
           >
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please provide a valid image URL.
+          </div>
         </div>
 
         <!-- Price Field -->
@@ -63,7 +85,7 @@
           <label for="price" class="form-label fw-semibold">
             <i class="fas fa-rupee-sign text-primary me-2"></i>Price per Night
           </label>
-          <div class="input-group">
+          <div class="input-group has-validation">
             <span class="input-group-text bg-primary text-white">
               <i class="fas fa-rupee-sign"></i>
             </span>
@@ -73,10 +95,17 @@
               name="price" 
               class="form-control form-control-lg" 
               value="<%= listing.price %>" 
-              min="0" 
+              min="100" 
+              max="100000"
               placeholder="2500" 
               required
             >
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Please enter a valid price (₹100 - ₹1,00,000).
+            </div>
           </div>
         </div>
 
@@ -92,8 +121,16 @@
             class="form-control form-control-lg" 
             value="<%= listing.location %>" 
             placeholder="e.g., Mumbai, Goa, Jaipur" 
+            minlength="2"
+            maxlength="50"
             required
           >
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please provide a valid location.
+          </div>
         </div>
 
         <!-- Country Field -->
@@ -110,6 +147,12 @@
             placeholder="e.g., India, United States" 
             required
           >
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please select a country.
+          </div>
         </div>
 
         <!-- Action Buttons -->
@@ -128,6 +171,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Bootstrap form validation
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
 
 <style>
   body {
@@ -194,6 +256,11 @@
 
   h2 {
     color: #2c3e50;
+  }
+
+  .valid-feedback, .invalid-feedback {
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
   /* Responsive adjustments */
